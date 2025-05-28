@@ -17,9 +17,9 @@ clock = pygame.time.Clock()
 fps = 60
 
 bg_image = pygame.image.load("./images/bg_image.jpg")
+icon = pygame.image.load("./images/icon.png")
 
-
-# pygame.display.set_icon(icon)
+pygame.display.set_icon(icon)
 
 # pygame.mixer_music.load("music/Infinite Perspective.mp3")
 
