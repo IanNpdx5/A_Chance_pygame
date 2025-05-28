@@ -88,12 +88,14 @@ def stop_music():
     music_playing = False
 
 def determin_slots():   
-    global plays, images
+    global plays, images, slots2
     plays += 1
     slots = chance_dict[r.randint(1, 125)]
+    slots2 = slots
     for i in range(num_slots):
         num = slots[i]
         slots[i] = images[num]
+    return slots
     
     
 
@@ -116,6 +118,18 @@ def Slots_animation():
         image_index = final_images[i]
         screen.blit(pygame.transform.scale(pygame.image.load(image_index), (200, 200)), slot_rects[i])
     draw_text("Press space to continue", game_font_reg, txt_color, 20, 20)  # Move to the next scene after animation
+
+def determin_win():
+    for i in range(num_slots):
+        for j in range(num_slots
+            if slots2[j] == slots2[i]:
+                win_num = 1
+            elif slots2[j] == slots2[i] and slots2[1] == slots2[i]:
+                win_num = 2
+            elif slots2[j] == slots2[i] and slots2[1] == slots2[i] and slots2[2] == slots2[i]:
+                win_num = 3
+
+
 print()
 
 # start_music("music/Infinite Perspective.mp3")
