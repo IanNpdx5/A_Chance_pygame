@@ -120,14 +120,20 @@ def Slots_animation():
     draw_text("Press space to continue", game_font_reg, txt_color, 20, 20)  # Move to the next scene after animation
 
 def determin_win():
+    global win_num
     for i in range(num_slots):
-        for j in range(num_slots
-            if slots2[j] == slots2[i]:
-                win_num = 1
-            elif slots2[j] == slots2[i] and slots2[1] == slots2[i]:
-                win_num = 2
-            elif slots2[j] == slots2[i] and slots2[1] == slots2[i] and slots2[2] == slots2[i]:
-                win_num = 3
+        if slots2[0] == 0 and slots2[1] == 0 and slots2[2] == 0:
+            win_num = 1
+        elif slots2[0] == 1 and slots2[1] == 1 and slots2[2] == 1:
+            win_num = 1
+        elif slots2[0] == 2 and slots2[1] == 2 and slots2[2] == 2:
+            win_num = 1
+        elif slots2[0] == 3 and slots2[1] == 3 and slots2[2] == 3:
+            win_num = 2
+        elif slots2[0] == 4 and slots2[1] == 4 and slots2[2] == 4:
+            win_num = 3
+        else:
+            win_num = 0
 
 
 print()
