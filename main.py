@@ -1,14 +1,16 @@
-import sys, pygame
+import sys, os, pygame, random as r, itertools
+
+os.environ['SDL_AUDIODRIVER'] = 'dsp' # fix sound playback
 
 # Initialize PyGame's internal variables
 pygame.init()
 
 pygame.key.set_repeat(60, 10)
 
-pygame.display.set_caption('  Game Name  ')
+pygame.display.set_caption('  Slot Machine Game  ')
 
 # Set up variables for the screen size in pixels
-size = (1540, 865)
+size = (1280, 865)
 
 # Initialize a window with the screen size you set
 screen = pygame.display.set_mode(size)
@@ -26,19 +28,26 @@ pygame.display.set_icon(icon)
 music_playing = False
 
 # vars
-Win_chance = 0.1
-Jackpot_chance = 0.01
-Super_Jackpot_chance = 0.001
 win_num = 0
 win = ["You Lost", "You Won", "You won the Jackpot", "You won the Super Jackpot"]
 plays = 1
-
+images = ["images/slot1.png", "images/slot2.png", "images/slot3.png", "images/slot4.png", "images/slot5.png"]
+chance_dict = {}
+num = 0
+for i in itertools.product([0,1,2,3,4], repeat=3):
+    chance_dict[num] = i
+    num += 1
+print(chance_dict)
+num_slots = 3
+num_images = 5
+# Load images for the slots
+# slots_images = [pygame.transform.scale(pygame.image.load(f"./images/slot{i+1}.png"), (200, 200)) for i in range(num_images)]    
 # Colors
 txt_color = (0, 0, 0)
 
-game_font_small = pygame.font.SysFont("./fonts/Montserrat/Montserrat-Regular.ttf", 25)
-game_font_reg = pygame.font.SysFont("./fonts/Montserrat/Montserrat-Regular.ttf", 50)
-game_font_big = pygame.font.SysFont("./fonts/Montserrat/Montserrat-Regular.ttf", 100)
+game_font_small = pygame.font.Font("Ubuntu-Regular.ttf", 25)
+game_font_reg = pygame.font.Font("Ubuntu-Regular.ttf", 50)
+game_font_big = pygame.font.Font("Ubuntu-Regular.ttf", 100)
 
 stage = 1
 scene = 1
@@ -46,12 +55,12 @@ scene = 1
 def draw_sprites():
     if scene == 1:
         screen.blit(bg_image, (0, 0))
-        draw_text("Game Name", game_font_big, txt_color, 450, 252.5)
+        draw_text("Slots Machine Game", game_font_big, txt_color, 450, 252.5)
         draw_text("BY IAN NORTHCUTT", game_font_big, txt_color, 450, 352.5)
         draw_text("PRESS SPACE TO START", game_font_big, txt_color, 400, 452.5)
     elif scene == 2:
         screen.blit(bg_image, (0, 0))
-        draw_text(f"", game_font_reg, txt_color, 20, 20)
+        Slots_animation()
     elif scene == 3:        
         screen.blit(bg_image, (0, 0))
         draw_text(win[win_num], game_font_big, txt_color, 200, 252.5)
@@ -78,7 +87,35 @@ def stop_music():
     pygame.mixer_music.stop()
     music_playing = False
 
+def determin_slots():   
+    global plays, images
+    plays += 1
+    slots = chance_dict[r.randint(1, 125)]
+    for i in range(num_slots):
+        num = slots[i]
+        slots[i] = images[num]
+    
+    
 
+def Slots_animation():
+    global scene
+    slots_images = [pygame.transform.scale(pygame.image.load(f"./images/slot{i+1}.png"), (200, 200)) for i in range(num_images)]
+    slot_rects = [pygame.Rect(100 + i * 250, 300, 200, 200) for i in range(num_slots)]
+    
+    for i in range(30):  # Animation frames
+        screen.blit(bg_image, (0, 0))
+        for j in range(num_slots):
+            image_index = (i + j) % num_images
+            screen.blit(slots_images[image_index], slot_rects[j])
+        
+        pygame.display.flip()
+        clock.tick(30)  # Control the speed of the animation
+    
+    final_images = determin_slots()
+    for i in range(num_slots):
+        image_index = final_images[i]
+        screen.blit(pygame.transform.scale(pygame.image.load(image_index), (200, 200)), slot_rects[i])
+    draw_text("Press space to continue", game_font_reg, txt_color, 20, 20)  # Move to the next scene after animation
 print()
 
 # start_music("music/Infinite Perspective.mp3")
@@ -99,21 +136,22 @@ while True:
             if scene == 1:
                 if key[pygame.K_SPACE] or key[pygame.K_s]:
                     scene = 2
+                    Slots_animation()
                 elif key[pygame.K_q] or key[pygame.K_ESCAPE] or key[pygame.K_END]:
                     print("You left the game. :|")
                     sys.exit()
             elif scene == 2:
+                if key[pygame.K_SPACE]:
+                    scene = 3
                 if key[pygame.K_q] or key[pygame.K_ESCAPE] or key[pygame.K_END]:
                     print("You left the game. :|")
                     sys.exit()
             elif scene == 3:
                 if key[pygame.K_SPACE] or key[pygame.K_s]:
-                    win_num += 1
-                    scene = 2
+                    scene = 1
                 elif key[pygame.K_q] or key[pygame.K_ESCAPE] or key[pygame.K_END]:
                     print("You left the game. :|")
                     sys.exit()
-
 
     draw_sprites()
 
