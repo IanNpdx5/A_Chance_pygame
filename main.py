@@ -7,7 +7,7 @@ pygame.init()
 
 pygame.key.set_repeat(60, 10)
 
-pygame.display.set_caption('  Slot Machine Game  ')
+pygame.display.set_caption('  Fruti Slots  ')
 
 # Set up variables for the screen size in pixels
 size = (1280, 865)
@@ -23,31 +23,28 @@ icon = pygame.image.load("./images/icon.png")
 
 pygame.display.set_icon(icon)
 
-# pygame.mixer_music.load("music/Infinite Perspective.mp3")
-
 music_playing = False
 
 # vars
 win_num = 0
 win = ["You Lost", "You Won", "You won the Jackpot", "You won the Super Jackpot"]
 plays = 1
-images = ["images/slot1.png", "images/slot2.png", "images/slot3.png", "images/slot4.png", "images/slot5.png"]
+images = ["images/slot1.png", "images/slot2.png", "images/slot3.png", "images/slot4.png", "images/slot5.png", "images/slot6.png", "images/slot7.png", "images/slot8.png", "images/slot9.png", "images/slot10.png"]
+num_images = 10
 chance_dict = {}
 num = 0
 for i in itertools.product([0,1,2,3,4], repeat=3):
     chance_dict[num] = i
     num += 1
-print(chance_dict)
 num_slots = 3
-num_images = 5
 # Load images for the slots
-# slots_images = [pygame.transform.scale(pygame.image.load(f"./images/slot{i+1}.png"), (200, 200)) for i in range(num_images)]    
+slots_images = [pygame.transform.scale(pygame.image.load(f"./images/slot{i+1}.png"), (200, 200)) for i in range(num_images)]    
 # Colors
-txt_color = (0, 0, 0)
+txt_color = (255, 255, 255)  # White
 
-game_font_small = pygame.font.Font("Ubuntu-Regular.ttf", 25)
-game_font_reg = pygame.font.Font("Ubuntu-Regular.ttf", 50)
-game_font_big = pygame.font.Font("Ubuntu-Regular.ttf", 100)
+game_font_small = pygame.font.Font(None, 25)
+game_font_reg = pygame.font.Font(None, 50)
+game_font_big = pygame.font.Font(None, 100)
 
 stage = 1
 scene = 1
@@ -55,9 +52,9 @@ scene = 1
 def draw_sprites():
     if scene == 1:
         screen.blit(bg_image, (0, 0))
-        draw_text("Slots Machine Game", game_font_big, txt_color, 450, 252.5)
-        draw_text("BY IAN NORTHCUTT", game_font_big, txt_color, 450, 352.5)
-        draw_text("PRESS SPACE TO START", game_font_big, txt_color, 400, 452.5)
+        draw_text("Fruti Slots", game_font_big, txt_color, 430, 252.5)
+        draw_text("BY IAN NORTHCUTT", game_font_big, txt_color, 330, 352.5)
+        draw_text("PRESS SPACE TO START", game_font_big, txt_color, 280, 452.5)
     elif scene == 2:
         screen.blit(bg_image, (0, 0))
         Slots_animation()
@@ -72,21 +69,6 @@ def draw_text(text, font, color, x, y):
     image = font.render(text, True, color)
     screen.blit(image, (x, y))
 
-def start_music(name):
-    global music_playing
-    if not music_playing:
-        pygame.mixer_music.load(name)
-        pygame.mixer_music.play()
-        music_playing = True
-    else:
-        stop_music()
-        start_music(name)
-
-def stop_music():
-    global music_playing
-    pygame.mixer_music.stop()
-    music_playing = False
-
 def determin_slots():   
     global plays, images, slots2
     plays += 1
@@ -97,13 +79,9 @@ def determin_slots():
         slots[i] = images[num]
     return slots
     
-    
-
 def Slots_animation():
     global scene
-    slots_images = [pygame.transform.scale(pygame.image.load(f"./images/slot{i+1}.png"), (200, 200)) for i in range(num_images)]
     slot_rects = [pygame.Rect(100 + i * 250, 300, 200, 200) for i in range(num_slots)]
-    
     for i in range(30):  # Animation frames
         screen.blit(bg_image, (0, 0))
         for j in range(num_slots):
@@ -114,6 +92,7 @@ def Slots_animation():
         clock.tick(30)  # Control the speed of the animation
     
     final_images = determin_slots()
+    determin_win()
     for i in range(num_slots):
         image_index = final_images[i]
         screen.blit(pygame.transform.scale(pygame.image.load(image_index), (200, 200)), slot_rects[i])
@@ -137,8 +116,6 @@ def determin_win():
 
 
 print()
-
-# start_music("music/Infinite Perspective.mp3")
 
 # ==========================
 # ===== MAIN GAME LOOP =====
