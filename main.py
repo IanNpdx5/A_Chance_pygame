@@ -37,6 +37,7 @@ for i in itertools.product([0,1,2,3,4], repeat=3):
     chance_dict[num] = i
     num += 1
 num_slots = 3
+slots2 = []
 # Load images for the slots
 slots_images = [pygame.transform.scale(pygame.image.load(f"./images/slot{i+1}.png"), (200, 200)) for i in range(num_images)]    
 # Colors
@@ -74,14 +75,15 @@ def determin_slots():
     plays += 1
     slots = chance_dict[r.randint(1, 125)]
     slots2 = slots
+    slots3 = []
     for i in range(num_slots):
         num = slots[i]
-        slots[i] = images[num]
-    return slots
+        slots3.append(images[num])
+    return slots3
     
 def Slots_animation():
     global scene
-    slot_rects = [pygame.Rect(100 + i * 250, 300, 200, 200) for i in range(num_slots)]
+    slot_rects = [pygame.Rect(250 + i * 250, 300, 200, 200) for i in range(num_slots)]
     for i in range(30):  # Animation frames
         screen.blit(bg_image, (0, 0))
         for j in range(num_slots):
