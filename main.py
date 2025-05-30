@@ -5,8 +5,6 @@ os.environ['SDL_AUDIODRIVER'] = 'dsp' # fix sound playback
 # Initialize PyGame's internal variables
 pygame.init()
 
-pygame.key.set_repeat(60, 10)
-
 pygame.display.set_caption('  Fruti Slots  ')
 
 # Set up variables for the screen size in pixels
