@@ -40,7 +40,7 @@ for i in itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=num_slots):
 # Load images for the slots
 slots_images = [pygame.transform.scale(pygame.image.load(f"./images/slot{i+1}.png"), (200, 200)) for i in range(num_images)]    
 # Colors
-txt_color = (255, 255, 255)  # White
+txt_color = (255, 255, 255)  
 # fonts
 game_font_small = pygame.font.Font(None, 25)
 game_font_reg = pygame.font.Font(None, 50)
@@ -51,18 +51,12 @@ scene = 1
 def draw_sprites():
     if scene == 1:
         screen.blit(bg_image, (0, 0))
-        draw_text("Fruti Slots", game_font_big, txt_color, 430, 252.5)
-        draw_text("BY IAN NORTHCUTT", game_font_big, txt_color, 330, 352.5)
-        draw_text("PRESS SPACE TO START", game_font_big, txt_color, 280, 452.5)
+        draw_text("Fruti Slots", game_font_big, txt_color, 440, 552.5)
+        draw_text("BY IAN NORTHCUTT", game_font_big, txt_color, 310, 652.5)
+        draw_text("PRESS SPACE TO START", game_font_big, txt_color, 260, 752.5)
     elif scene == 2:
         screen.blit(bg_image, (0, 0))
         Slots_animation()
-    elif scene == 3:        
-        screen.blit(bg_image, (0, 0))
-        draw_text(win[win_num], game_font_big, txt_color, 200, 252.5)
-        draw_text("press space to play again", game_font_big, txt_color, 320, 352.5)
-        draw_text("or press esc, q, or end to exit.", game_font_big, txt_color, 250, 452.5)
-
 
 def draw_text(text, font, color, x, y):
     image = font.render(text, True, color)
@@ -103,8 +97,8 @@ def determin_slots():
     return slots1
     
 def Slots_animation():
-    global scene
-    slot_rects = [pygame.Rect(100 + i * 250, 300, 200, 200) for i in range(num_slots)]
+    global scene, win_num, num_of_wins
+    slot_rects = [pygame.Rect(40 + i * 250, 300, 200, 200) for i in range(num_slots)]
     for i in range(30):  # Animation frames
         screen.blit(bg_image, (0, 0))
         for j in range(num_slots):
@@ -115,10 +109,12 @@ def Slots_animation():
         clock.tick(30)  # Control the speed of the animation
     
     final_images = determin_slots()
+    screen.blit(bg_image, (0, 0))
     for i in range(num_slots):
         image_index = final_images[i]
         screen.blit(pygame.transform.scale(pygame.image.load(image_index), (200, 200)), slot_rects[i])
-    draw_text("Press space to continue", game_font_reg, txt_color, 20, 20)  # Move to the next scene after animation
+    draw_text(f"{win[win_num]} Press space to play again", game_font_reg, txt_color, 20, 20)  
+    scene = 3 # Move to the next scene after animation
 
 print()
 
@@ -138,7 +134,6 @@ while True:
             if scene == 1:
                 if key[pygame.K_SPACE] or key[pygame.K_s]:
                     scene = 2
-                    Slots_animation()
                 elif key[pygame.K_q] or key[pygame.K_ESCAPE] or key[pygame.K_END]:
                     print("You left the game. :|")
                     sys.exit()
@@ -149,9 +144,8 @@ while True:
                     print("You left the game. :|")
                     sys.exit()
             elif scene == 3:
-                if key[pygame.K_SPACE] or key[pygame.K_s]:
+                if key[pygame.K_SPACE]:
                     scene = 1
-                    win_num = None
                 elif key[pygame.K_q] or key[pygame.K_ESCAPE] or key[pygame.K_END]:
                     print("You left the game. :|")
                     sys.exit()
