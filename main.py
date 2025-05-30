@@ -26,28 +26,26 @@ pygame.display.set_icon(icon)
 music_playing = False
 
 # vars
-win_num = 0
-win = ["You Lost", "You Won", "You won the Jackpot", "You won the Super Jackpot"]
-plays = 1
+win_num = None
+# win messages
+win = ["You Lost", "You Won", "You won the Jackpot"]
 images = ["images/slot1.png", "images/slot2.png", "images/slot3.png", "images/slot4.png", "images/slot5.png", "images/slot6.png", "images/slot7.png", "images/slot8.png", "images/slot9.png", "images/slot10.png"]
 num_images = 10
 chance_dict = {}
 num = 0
-for i in itertools.product([0,1,2,3,4], repeat=3):
+num_slots = 5
+for i in itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=num_slots):
     chance_dict[num] = i
     num += 1
-num_slots = 3
-slots2 = []
 # Load images for the slots
 slots_images = [pygame.transform.scale(pygame.image.load(f"./images/slot{i+1}.png"), (200, 200)) for i in range(num_images)]    
 # Colors
 txt_color = (255, 255, 255)  # White
-
+# fonts
 game_font_small = pygame.font.Font(None, 25)
 game_font_reg = pygame.font.Font(None, 50)
 game_font_big = pygame.font.Font(None, 100)
 
-stage = 1
 scene = 1
 
 def draw_sprites():
@@ -71,19 +69,42 @@ def draw_text(text, font, color, x, y):
     screen.blit(image, (x, y))
 
 def determin_slots():   
-    global plays, images, slots2
-    plays += 1
-    slots = chance_dict[r.randint(1, 125)]
-    slots2 = slots
-    slots3 = []
+    global images, win_num
+    slots = chance_dict[r.randint(1, len(chance_dict) - 1)]
+    slots1 = []
     for i in range(num_slots):
         num = slots[i]
-        slots3.append(images[num])
-    return slots3
+        slots1.append(images[num])
+    for i in range(num_slots):
+        if slots[0] == 0 and slots[1] == 0 and slots1[2] == 0 and slots1[3] == 0 and slots1[4] == 0 and slots1[5] == 0 and slots1[6] == 0 and slots1[7] == 0 and slots1[8] == 0 and slots1[9] == 0:
+            win_num = 1
+        elif slots[0] == 1 and slots[1] == 1 and slots1[2] == 1 and slots1[3] == 1 and slots1[4] == 1 and slots1[5] == 1 and slots1[6] == 1 and slots1[7] == 1 and slots1[8] == 1 and slots1[9] == 1:
+            win_num = 1
+        elif slots[0] == 2 and slots[1] == 2 and slots1[2] == 2 and slots1[3] == 2 and slots1[4] == 2 and slots1[5] == 2 and slots1[6] == 2 and slots1[7] == 2 and slots1[8] == 2 and slots1[9] == 2:
+            win_num = 1
+        elif slots[0] == 3 and slots[1] == 3 and slots1[2] == 3 and slots1[3] == 3 and slots1[4] == 3 and slots1[5] == 3 and slots1[6] == 3 and slots1[7] == 3 and slots1[8] == 3 and slots1[9] == 3:
+            win_num = 1
+        elif slots[0] == 4 and slots[1] == 4 and slots1[2] == 4 and slots1[3] == 4 and slots1[4] == 4 and slots1[5] == 4 and slots1[6] == 4 and slots1[7] == 4 and slots1[8] == 4 and slots1[9] == 4:
+            win_num = 1
+        elif slots[0] == 5 and slots[1] == 5 and slots1[2] == 5 and slots1[3] == 5 and slots1[4] == 5 and slots1[5] == 5 and slots1[6] == 5 and slots1[7] == 5 and slots1[8] == 5 and slots1[9] == 5:
+            win_num = 1
+        elif slots[0] == 6 and slots[1] == 6 and slots1[2] == 6 and slots1[3] == 6 and slots1[4] == 6 and slots1[5] == 6 and slots1[6] == 6 and slots1[7] == 6 and slots1[8] == 6 and slots1[9] == 6:
+            win_num = 1
+        elif slots[0] == 7 and slots[1] == 7 and slots1[2] == 7 and slots1[3] == 7 and slots1[4] == 7 and slots1[5] == 7 and slots1[6] == 7 and slots1[7] == 7 and slots1[8] == 7 and slots1[9] == 7:
+            win_num = 1
+        elif slots[0] == 8 and slots[1] == 8 and slots1[2] == 8 and slots1[3] == 8 and slots1[4] == 8 and slots1[5] == 8 and slots1[6] == 8 and slots1[7] == 8 and slots1[8] == 8 and slots1[9] == 8:
+            win_num = 1
+        elif slots[0] == 9 and slots[1] == 9 and slots1[2] == 9 and slots1[3] == 9 and slots1[4] == 9 and slots1[5] == 9 and slots1[6] == 9 and slots1[7] == 9 and slots1[8] == 9 and slots1[9] == 9:
+            win_num = 1
+        elif slots[0] == 0 and slots[1] == 1 and slots1[2] == 2 and slots1[3] == 3 and slots1[4] == 4 and slots1[5] == 5 and slots1[6] == 6 and slots1[7] == 7 and slots1[8] == 8 and slots1[9] == 9:
+            win_num = 2
+        else:
+            win_num = 0
+    return slots1
     
 def Slots_animation():
     global scene
-    slot_rects = [pygame.Rect(250 + i * 250, 300, 200, 200) for i in range(num_slots)]
+    slot_rects = [pygame.Rect(100 + i * 250, 300, 200, 200) for i in range(num_slots)]
     for i in range(30):  # Animation frames
         screen.blit(bg_image, (0, 0))
         for j in range(num_slots):
@@ -94,28 +115,10 @@ def Slots_animation():
         clock.tick(30)  # Control the speed of the animation
     
     final_images = determin_slots()
-    determin_win()
     for i in range(num_slots):
         image_index = final_images[i]
         screen.blit(pygame.transform.scale(pygame.image.load(image_index), (200, 200)), slot_rects[i])
     draw_text("Press space to continue", game_font_reg, txt_color, 20, 20)  # Move to the next scene after animation
-
-def determin_win():
-    global win_num
-    for i in range(num_slots):
-        if slots2[0] == 0 and slots2[1] == 0 and slots2[2] == 0:
-            win_num = 1
-        elif slots2[0] == 1 and slots2[1] == 1 and slots2[2] == 1:
-            win_num = 1
-        elif slots2[0] == 2 and slots2[1] == 2 and slots2[2] == 2:
-            win_num = 1
-        elif slots2[0] == 3 and slots2[1] == 3 and slots2[2] == 3:
-            win_num = 2
-        elif slots2[0] == 4 and slots2[1] == 4 and slots2[2] == 4:
-            win_num = 3
-        else:
-            win_num = 0
-
 
 print()
 
@@ -148,6 +151,7 @@ while True:
             elif scene == 3:
                 if key[pygame.K_SPACE] or key[pygame.K_s]:
                     scene = 1
+                    win_num = None
                 elif key[pygame.K_q] or key[pygame.K_ESCAPE] or key[pygame.K_END]:
                     print("You left the game. :|")
                     sys.exit()
